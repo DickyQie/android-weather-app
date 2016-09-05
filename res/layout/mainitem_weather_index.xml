@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0098DC"
+    android:orientation="vertical" 
+    android:gravity="center"
+    >
+     <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btnselect"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+             >
+
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:src="@drawable/beijing" />
+			<LinearLayout 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"			    
+			    >
+			    <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img1"
+                android:text="穿衣指数"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text1"
+                android:layout_toRightOf="@+id/img1"
+                android:text="建议着厚外套加毛衣等服装"
+                android:textSize="18sp" />
+			</LinearLayout>
+            
+        </LinearLayout>
+	<!-- 	
+     	 <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btnselect"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+             >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:src="@drawable/icon_4_c" />
+			<LinearLayout 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"			    
+			    >
+			    <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img1"
+                android:text="防晒指数"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text1"
+                android:layout_toRightOf="@+id/img1"
+                android:text="空气干燥，建议选用防晒滋润型护发品  "
+                android:textSize="18sp" />
+			</LinearLayout>
+            
+        </LinearLayout>
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btnselect"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+             >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:src="@drawable/icon_4_c" />
+			<LinearLayout 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"			    
+			    >
+			    <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img1"
+                android:text="晨练指数"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text1"
+                android:layout_toRightOf="@+id/img1"
+                android:text="若坚持室外晨练请注意保暖防冻"
+                android:textSize="18sp" />
+			</LinearLayout>
+            
+        </LinearLayout>
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btnselect"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+             >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:src="@drawable/icon_4_c" />
+			<LinearLayout 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"			    
+			    >
+			    <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img1"
+                android:text="出行指数"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text1"
+                android:layout_toRightOf="@+id/img1"
+                android:text="气象条件良好，车辆可以正常行驶"
+                android:textSize="18sp" />
+			</LinearLayout>
+            
+        </LinearLayout>
+      -->
+</LinearLayout>
