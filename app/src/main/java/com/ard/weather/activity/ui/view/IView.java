@@ -1,21 +1,20 @@
 package com.ard.weather.activity.ui.view;
 
-import com.ard.weather.activity.entity.A;
+import com.ard.weather.activity.entity.WeatherBean;
 
 
 /**
- * Created by Administrator on 2017/2/20.
+ * Created by zhangqie on 2017/2/20.
  */
 
 public interface IView {
 
-    interface IMvpListener{
 
-       // void onDataCallBackListenter(WeatherInfo list);
-        void onDataCallBackListenter(A list);
+    interface IMvpWeatherListener{
+
+        void onDataCallBackListenter(WeatherBean weatherBean);
         void onError(String error);
     }
-
 
 
 

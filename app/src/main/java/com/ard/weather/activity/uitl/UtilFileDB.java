@@ -1,51 +1,114 @@
 package com.ard.weather.activity.uitl;
 
+import android.content.SharedPreferences;
+
+import com.ard.weather.activity.api.WeatherApplication;
+import com.orhanobut.hawk.Hawk;
+
 /**
- * Created by Administrator on 2017/3/1.
+ * Created by zhangqie on 2017/3/1.
  */
 
 public class UtilFileDB {
+
+
+    public static SharedPreferences sharedPreferences = WeatherApplication.preferences;
+    public static SharedPreferences.Editor editor = WeatherApplication.editor;
+
+
     /****
      * 永久缓存
-     * @param aCache
      * @param key
      * @param content
      */
-    public static final void ADDFile(ACache aCache,String key,String content)
+    public static final void ADDSHAREDDATA(String key,String content)
     {
-        aCache.put(key,content);
+        editor.putString(key,content);
+        editor.commit();
     }
 
-    /***
-     * 按照时间长度缓存
-     * @param aCache
+    /****
+     * 永久缓存
      * @param key
      * @param content
-     * @param time
      */
-    public static final void ADDFile(ACache aCache,String key,String content,int time)
+    public static final void ADDSHAREDDATA(String key,int content)
     {
-        aCache.put(key,content,time);
+        editor.putInt(key,content);
+        editor.commit();
     }
 
     /***
-     *查询数据
-     * @param aCache
+     * 查询数据
      * @param key
      * @return
      */
-    public static final String SELETEFile(ACache aCache,String key)
-    {
-        return aCache.getAsString(key);
+    public static final String SELECTSHAREDDATA(String key) {
+        String content = sharedPreferences.getString(key, "");
+        if (!content.equals("")) {
+            return content;
+        }
+        return "";
     }
 
     /***
      * 清空
-     * @param aCache
      * @param key
      */
-    public static final void DELETEFile(ACache aCache,String key)
+    public static final void DELETESHAREDDATA(String key)
     {
-        aCache.remove(key);
+        editor.remove(key);
+        editor.commit();
+    }
+
+    /***
+     * 缓存数据
+     * @param key
+     * @param content 任意类型
+     */
+    public static final void ADDDATA(String key,Object content)
+    {
+        Hawk.put(key,content);
+    }
+
+
+    /***
+     *查询数据
+     * @param key
+     * @return
+     */
+    public static final Object SELETEDATA(String key)
+    {
+        return Hawk.get(key);
+    }
+
+    /***
+     * 清空
+     * @param key
+     */
+    public static final boolean DELETEDATA(String key)
+    {
+        return Hawk.delete(key);
+    }
+
+
+    /***
+     * 清空全部缓存
+     */
+    public static final boolean CLEARDATA()
+    {
+        return Hawk.deleteAll();
+    }
+
+
+
+    /***
+     *查询数据是否为空
+     * @param key
+     * @return
+     */
+    public static final boolean ISSELETEDATA(String key)
+    {
+        return  Hawk.contains(key);
     }
 }

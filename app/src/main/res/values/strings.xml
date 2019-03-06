@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">歆语气象通</string>
+
+    <string name="no_network">网络未连接,请检查网络</string>
 </resources>

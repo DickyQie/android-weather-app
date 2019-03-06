@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@color/colorWhite"
+    android:layout_margin="8dp"
+    >
+
+    <ImageView
+        android:id="@+id/item_iv_grid_lnt"
+        android:layout_width="35dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ct"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/item_iv_grid_ct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="穿衣指数"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:id="@+id/item_iv_grid_ct_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寒冷"
+        android:textColor="@color/nomal_login_zc_txt"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="15dp"
+        />
+
+</LinearLayout>

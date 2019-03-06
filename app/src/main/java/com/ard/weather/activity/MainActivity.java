@@ -1,36 +1,33 @@
 package com.ard.weather.activity;
 
+import android.Manifest;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
-import android.os.Message;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-import com.ard.weather.activity.api.Api;
-import com.ard.weather.activity.api.Utils;
 import com.ard.weather.activity.base.BaseActivity;
-import com.ard.weather.activity.ui.activity.WeatherHomeActivity;
-import com.ard.weather.activity.uitl.ACache;
+import com.ard.weather.activity.ui.activity.WeatherActivity;
 import com.ard.weather.activity.uitl.StatusBarUtil;
 import com.ard.weather.activity.uitl.UtilFileDB;
+import com.ard.weather.activity.uitl.Utils;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 
-import org.simple.eventbus.EventBus;
-import org.simple.eventbus.Subscriber;
+import butterknife.BindView;
 
-import butterknife.Bind;
+public class MainActivity extends BaseActivity  {
 
-public class MainActivity extends BaseActivity implements AMapLocationListener {
-
-    @Bind(R.id.activity_main)
+    @BindView(R.id.activity_main)
     RelativeLayout activityLogoImage;
-    private AlphaAnimation alphaAnimation;
 
-    private AMapLocationClient locationClient = null;
-    private AMapLocationClientOption locationOption = null;
-    private ACache aCache;
+    private AlphaAnimation alphaAnimation;
+    private Handler handler;
 
     @Override
     protected int setMainLayout() {
@@ -38,45 +35,69 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     }
 
     @Override
-    protected void initEvents() {
-        EventBus.getDefault().register(this);
-        aCache = ACache.get(MainActivity.this);
+    protected void initView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            showPermissions();
+        }else {
+            startActivityLnt();
+        }
     }
 
     @Override
     protected void initBeforeData() {
+
+    }
+
+
+    private void startActivityLnt(){
         alphaAnimation = new AlphaAnimation(0.1f, 1.0f);
         alphaAnimation.setDuration(2500);
         activityLogoImage.startAnimation(alphaAnimation);
-        if (UtilFileDB.SELETEFile(aCache, "mapcity") == null) {
-            UtilFileDB.ADDFile(aCache, "mapcity", Api.cityName);
-            Location();
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    openActivity(WeatherHomeActivity.class);
-                }
-            }, 2500);
-        }else{
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    openActivity(WeatherHomeActivity.class);
-                }
-            }, 2500);
-        }
-
-
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("zqweatherdatatime",Utils.dateTime());
+                UtilFileDB.ADDSHAREDDATA("zqweatherdatatime", Utils.dateTime());
+                Intent intent = new Intent(MainActivity.this,WeatherActivity.class);
+                startActivityForResult(intent,1);
+            }
+        }, 2500);
     }
 
-    @Subscriber(tag = "finish")
-    public void showFinsh(boolean isfinsh) {
-        if (isfinsh) {
-            finish();
-        }
+
+    /***
+     * 递归实现 权限申请
+     */
+    protected void showPermissions() {
+        AndPermission.with(this)
+                .requestCode(101)
+                .permission(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .send();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults, listener);
+    }
+
+    private PermissionListener listener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode) {
+            if (requestCode == 101) {
+                startActivityLnt();
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode) {
+            if (requestCode == 101) {
+                showPermissions();
+            }
+        }
+    };
 
     protected void setStatusBar() {
         StatusBarUtil.setTranslucent(this, 0);
@@ -84,61 +105,25 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onLocationChanged(AMapLocation loc) {
-        if (null != loc) {
-            Message msg = mHandler.obtainMessage();
-            msg.obj = loc;
-            msg.what = Utils.MSG_LOCATION_FINISH;
-            mHandler.sendMessage(msg);
-        }
-
-    }
-
-    Handler mHandler = new Handler() {
-        public void dispatchMessage(Message msg) {
-            switch (msg.what) {
-                //定位完成
-                case Utils.MSG_LOCATION_FINISH:
-                    String result = "";
-                    try {
-                        AMapLocation loc = (AMapLocation) msg.obj;
-                        result = Utils.getLocationStr(loc, 1);
-                        UtilFileDB.ADDFile(aCache, "mapLocCity", result);
-                    } catch (Exception e) {
-                        showToastShort("定位失败");
-                    }
-                    break;
-                default:
-                    break;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == 1) {
+                ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                manager.killBackgroundProcesses(getPackageName());
+                finish();
             }
         }
-
-        ;
-
-    };
-
-    public void Location() {
-        // TODO Auto-generated method stub
-        try {
-            locationClient = new AMapLocationClient(this);
-            locationOption = new AMapLocationClientOption();
-            // 设置定位模式为低功耗模式
-            locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
-            // 设置定位监听
-            locationClient.setLocationListener(this);
-            locationOption.setOnceLocation(true);//设置为单次定位
-            locationClient.setLocationOption(locationOption);// 设置定位参数
-            // 启动定位
-            locationClient.startLocation();
-            mHandler.sendEmptyMessage(Utils.MSG_LOCATION_START);
-        } catch (Exception e) {
-            showToastShort("定位失败");
-        }
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.exit(0);
+        handler = null;
+    }
+
+
+
 }

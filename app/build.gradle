@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.ard.weather.activity"
-        minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 2
-        versionName "2.0"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 3
+        versionName "3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -20,30 +20,42 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:22.2.+'
-    //eventbus通信
-    compile 'org.simple:androideventbus:1.0.5.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+
+    /*权限申请*/
+    implementation 'com.yanzhenjie:permission:1.0.1'
+
+    /*缓存*/
+    implementation 'com.orhanobut:hawk:2.0.1'
+
     //fastjson解析
-    compile 'com.alibaba:fastjson:1.1.54.android'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    implementation 'com.alibaba:fastjson:1.1.54.android'
+
     //注解式开发
-    //retrofit2
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    //gson解析
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    implementation 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
     //rxjava
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
-    compile 'com.android.support:design:22.2.+'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    testCompile 'junit:junit:4.12'
-    compile files('libs/picasso-2.5.2.jar')
-    compile files('libs/AMap_Location_V3.0.0_20160922.jar')
-    compile files('libs/AMap_Search_V3.5.0_20160927.jar')
-    compile files('libs/AMap_3DMap_V4.1.1_20161019.jar')
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'io.reactivex:rxjava:1.1.6'
+
+    //retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    //gson解析
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+
+
+
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+
+    implementation 'com.gyf.immersionbar:immersionbar:2.3.3'
+
+    testImplementation 'junit:junit:4.12'
 }

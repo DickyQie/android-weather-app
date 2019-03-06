@@ -14,7 +14,7 @@ import com.ard.weather.activity.uitl.StatusBarUtil;
 import butterknife.ButterKnife;
 
 /**
- * Created by Administrator on 2017/2/20.
+ * Created by zhangqie on 2017/2/20.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -25,7 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(setMainLayout());
         ButterKnife.bind(this);
         setStatusBar();
-        initEvents();
+        initView();
         initBeforeData();
 
     }
@@ -42,27 +42,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 初始化事件
      */
-    protected abstract void initEvents();
+    protected abstract void initView();
 
-    /**
-     * 弹出toast 显示时长short
-     *
-     * @param msg
-     */
-    protected void showToastShort(String msg) {
-        if (!TextUtils.isEmpty(msg)) {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        }
+    protected void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-    /**
-     * 弹出toast 显示时长long
-     *
-     * @param msg
-     */
-    protected void showToastLong(String msg) {
-        if (!TextUtils.isEmpty(msg)) {
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-        }
+    protected void showToast(int msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     /***
@@ -75,6 +61,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void openIntent(Intent intent) {
         startActivity(intent);
+    }
+
+
+    protected void openForResultActivity(Intent intent, int requestCode) {
+        startActivityForResult(intent, requestCode);
     }
 
     /***
@@ -103,7 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+        ButterKnife.bind(this).unbind();
     }
 }
 

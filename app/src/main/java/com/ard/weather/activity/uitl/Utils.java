@@ -1,76 +1,127 @@
 package com.ard.weather.activity.uitl;
 
+import android.content.Context;
+
+import com.ard.weather.activity.R;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Administrator on 2017/2/28.
+ * Created by zhangqie on 2017/2/28.
  */
 
 public class Utils {
 
 
-    private boolean aBoolean;
+    //读取本地JSON字符
+    public static String ReadDayDayString(Context context) {
+        InputStream is = null;
+        String msg = null;
+        try {
+            is = context.getResources().getAssets().open("city.json");
+            byte[] bytes = new byte[is.available()];
+            is.read(bytes);
+            msg = new String(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return msg;
+    }
 
-    public static final String showDateTime(String strTime) {
-        String time = strTime.substring((strTime.length() - 4), strTime.length());
-        if ((time.substring(0, 1).equals("0"))) {
-            return (time.subSequence(1, 2) + "/" + time.substring(2, 4));
+
+    /***
+     * 首页顶部app天气图标
+     * @param data
+     * @return
+     */
+    public static int showWeatherStatusLogo(String data) {
+        if (data.contains("雨")) {
+            return R.drawable.ic_app_type_yu;
+        } else if (data.contains("云") || data.contains("阴")) {
+            return R.drawable.ic_app_type_yun;
+        } else if (data.contains("雪")) {
+            return R.drawable.ic_app_type_xue;
         } else {
-            return (time.subSequence(0, 2) + "/" + time.substring(2, 4));
+            return R.drawable.ic_app_type_qing;
         }
 
     }
 
 
-    public static final String SHOWTEMPERATURE(String max,String min)
-    {
-        int m=Integer.valueOf(max);
-        int n=Integer.valueOf(min);
-        int s=m+n;
-       /* if (m<0)
-        {
-            m=-1*m;
+    /***
+     * 背景
+     * @param time
+     * @param data
+     * @return
+     */
+    public static int showWeatherBackStyle(int time,String data) {
+        if (time < 8){
+            return R.drawable.model_back_qing;
+        }else if (time > 8 && time <= 19){
+            if (data.contains("雨")) {
+                return R.drawable.model_back_yu;
+            }else if (data.contains("晴") || data.contains("云")){
+                return R.drawable.model_back_qing2;
+            }else {
+                return R.drawable.model_back_yun;
+            }
+        }else {
+            return R.drawable.model_back;
         }
-        if (n<0)
-        {
-            n=-1*n;
-        }
-        if (m==0)
-        {
-            m=1;
-        }
-        if (n==0)
-        {
-            n=1;
-        }*/
-        if (s==0)
-        {
-            s=2;
-        }
-        return String.valueOf(s/2);
-    }
-    static boolean isPower(String spower) {
-        if (spower.equals("0") || spower.equals("1") || spower.equals("2") || spower.equals("3") || spower.equals("4")
-                || spower.equals("5") || spower.equals("6") || spower.equals("7") || spower.equals("8") || spower.equals("9") || spower.equals("-")) {
-            return true;
-        }
-        return false;
-    }
-    public static String showCityWindPower(String strPower)
-    {
-        if(isPower(strPower.substring(0, 1)))
-        {
-            return "微风";
-        }
-        return strPower;
 
     }
+
+
+
+    public static int showWeatherStatusStyleGray(String data) {
+        if (data.contains("雨")) {
+            return R.mipmap.ic_type_rain;
+        } else if (data.contains("阴")) {
+            return R.mipmap.ic_type_overcast;
+        } else if (data.contains("云")) {
+            return R.mipmap.ic_type_cloudy;
+        } else if (data.contains("雪")) {
+            return R.mipmap.ic_type_xue;
+        } else {
+            return R.mipmap.ic_type_sunnyday;
+        }
+
+    }
+
+
+    public static int showWeatherStatusStyleBlue(String data) {
+
+        if (data.contains("雨")) {
+            return R.mipmap.ic_type_rain_blue;
+        } else if (data.contains("阴")) {
+            return R.mipmap.ic_type_overcast_blue;
+        } else if (data.contains("云")) {
+            return R.mipmap.ic_type_cloudy_blue;
+        } else if (data.contains("雪")) {
+            return R.mipmap.ic_type_xue_blue;
+        }else {
+            return R.mipmap.ic_type_sunnyday_blue;
+        }
+
+    }
+
+
+
     public static String showTime(int strDay) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return (sdf.format(date).toString()+"  周"+showDay(strDay));
+        return (sdf.format(date).toString() + "  周" + showDay(strDay));
     }
+
     public static String showDay(int day) {
         switch (day) {
             case 1:
@@ -93,37 +144,47 @@ public class Utils {
         return "";
     }
 
-    /****
-     * 农历
-     * @param date
+
+    /*****
+     *
+     * 日期格式字符串转换成时间戳
+     *
+     * @param date_str 字符串日期，要转换的数据
+     * @param original_type 原来的数据类型
+     * @param new_type 转换的新数据类型
      * @return
      */
-    public static final int[] showLunarDateTime(String date) {
-        return (new LunarsCalendar().solarToLunar(Integer.valueOf(date.substring(0, 4)), Integer.valueOf(date.substring(4, 6)), Integer.valueOf(date.substring(6, 8))));
+    public static String dateTimeStamp(String date_str, String original_type, String new_type) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(original_type);
+            SimpleDateFormat sdf2 = new SimpleDateFormat(new_type);
+            Date date = sdf.parse(date_str);
+            return sdf2.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
-    public static final String showLocation(String string)
-    {
-        try {
-            String[] strArray=string.split(",");
-            if ((strArray[1].equals("县") || strArray[1].equals("市辖区") ||  strArray[1].equals("市")) && (strArray[2].equals("县") || strArray[2].equals("市辖区") || strArray[2].equals("市")) ) {
-                return strArray[0];
-            }
-            else if (strArray[1].equals("县") || strArray[1].equals("市辖区") || strArray[1].equals("市"))
-            {
-                return strArray[0]+","+strArray[2];
-            }
-            else if (strArray[2].equals("县") || strArray[2].equals("市辖区") || strArray[2].equals("市"))
-            {
-                return strArray[0]+","+strArray[1];
-            }
-            else{
-                return strArray[0]+","+strArray[2];
-            }
-        } catch (Exception e) {
-            return "北京,清华大学";
-        }
+    /***
+     *  获取当前日期时间
+     * @return
+     */
+    public static String dateTime() {
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss
+        Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
+    }
+
+    /***
+     *  获取当前日期时间
+     * @return
+     */
+    public static String dateTimeHH() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");// HH:mm:ss
+        Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
     }
 
 

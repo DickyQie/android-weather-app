@@ -1,30 +1,24 @@
 package com.ard.weather.activity.presenter;
 
-import android.content.Context;
-
-import com.ard.weather.activity.api.Api;
 import com.ard.weather.activity.model.HomeModel;
 import com.ard.weather.activity.ui.view.IView;
-import com.ard.weather.activity.uitl.ACache;
 
 
 /**
- * Created by Administrator on 2017/2/20.
+ * Created by zhangqie on 2017/2/20.
  */
 
-public class HomePresenter  extends BasePresenter<IView.IMvpListener> {
+public class HomePresenter extends BasePresenter<IView.IMvpWeatherListener> {
 
 
     private HomeModel baseModel;
-    private ACache aCache;
 
-    public HomePresenter(IView.IMvpListener listener,Context context){
-        baseModel=new HomeModel(listener,context);
+    public HomePresenter(IView.IMvpWeatherListener listener){
+        baseModel=new HomeModel(listener);
     }
-    public void showData(Context context)
+    public void showData(String id)
     {
-        aCache=ACache.get(context);
-        baseModel.addOrUpdateGoods(Api.showHomeTourShowApi(aCache),1);
+        baseModel.showWeatherDataSubscription(id);
     }
 
 

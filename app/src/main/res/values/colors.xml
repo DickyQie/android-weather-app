@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--
     <color name="colorPrimary">#36CCFE</color>
     <color name="colorPrimaryDark">#0DA5D7</color>
     <color name="colorAccent">#FF4081</color>
+-->
+    <color name="colorPrimary">#4695FA</color>
+    <color name="colorPrimaryDark">#4695FA</color>
+    <color name="colorAccent">#4695FA</color>
 
 
     <color name="colorYellow">#FFAC04</color>
@@ -22,6 +27,11 @@
     <color name="hei">#AFBBC9</color>
     <color name="foucse_login_zhuce_txt">#FF0000</color>
     <color name="nomal_login_zc_txt">#8B8B83</color>
+
+    <color name="gray_e4e4e4">#E4E4E4</color>
+
+
+
     <color name="transparent_background">#00000000</color>
     <color name="transparent_background1">#55FFAC04</color>
     <color name="transparent_background2">#15000000</color>

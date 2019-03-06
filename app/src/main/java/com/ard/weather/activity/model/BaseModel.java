@@ -4,7 +4,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -59,33 +58,6 @@ public class BaseModel<L> implements Model<L> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber));
     }
-    /***
-     * 注册
-     */
-    public void addSubscription(Observable observable, Func1 func1, Subscriber subscriber) {
-        if (compositeSubscription == null) {
-            compositeSubscription = new CompositeSubscription();
-        }
-        compositeSubscription.add(observable
-                .map(func1)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber));
-    }
-    /***
-     * 注册
-     */
-    public void addSubscriptionFlatMap(Observable observable, Func1 func1, Subscriber subscriber) {
-        if (compositeSubscription == null) {
-            compositeSubscription = new CompositeSubscription();
-        }
-        compositeSubscription.add(observable
-                .flatMap(func1)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber));
-    }
+
 
 }
