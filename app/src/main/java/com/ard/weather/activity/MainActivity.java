@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 
@@ -57,7 +56,6 @@ public class MainActivity extends BaseActivity  {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.i("zqweatherdatatime",Utils.dateTime());
                 UtilFileDB.ADDSHAREDDATA("zqweatherdatatime", Utils.dateTime());
                 Intent intent = new Intent(MainActivity.this,WeatherActivity.class);
                 startActivityForResult(intent,1);

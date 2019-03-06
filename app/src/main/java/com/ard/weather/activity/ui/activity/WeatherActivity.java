@@ -35,7 +35,7 @@ import butterknife.BindView;
 
 /**
  * Created by zhangqie on 2019/2/28
- * Describe:
+ * Describe: 打包信息，别名：weather  密码:zhangqie
  */
 public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, HomePresenter> implements IView.IMvpWeatherListener {
 
@@ -157,8 +157,7 @@ public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, 
             cityName = weatherBean.getValue().get(0).getCity();
             tvCityName.setText(weatherBean.getValue().get(0).getCity());
 
-            toolbar.setTitle(cityName+" "+temperature);
-            weatherLogo.setImageResource(Utils.showWeatherStatusLogo(weatherBean.getValue().get(0).getWeathers().get(0).getWeather()));
+            //weatherLogo.setImageResource(Utils.showWeatherStatusLogo(weatherBean.getValue().get(0).getWeathers().get(0).getWeather()));
 
             homeHorizontaRrecyclerAdapter = new HomeHorizontaRrecyclerAdapter(this,weatherBean.getValue().get(0).getWeatherDetailsInfo());
             recyclerHorizontal.setAdapter(homeHorizontaRrecyclerAdapter);
