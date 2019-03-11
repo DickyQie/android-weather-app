@@ -51,6 +51,7 @@ public class HomeModel extends BaseModel<IView.IMvpWeatherListener> {
             public void onNext(WeatherBean result) {
                 Log.i("aaa",result.getCode());
                 UtilFileDB.ADDDATA("zqweatherdata",result);
+                UtilFileDB.ADDSHAREDDATA("zqweatherdatatime", Utils.dateTime());
                 listener.onDataCallBackListenter(result);
             }
 

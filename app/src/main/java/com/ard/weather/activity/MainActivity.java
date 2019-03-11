@@ -13,8 +13,6 @@ import android.widget.RelativeLayout;
 import com.ard.weather.activity.base.BaseActivity;
 import com.ard.weather.activity.ui.activity.WeatherActivity;
 import com.ard.weather.activity.uitl.StatusBarUtil;
-import com.ard.weather.activity.uitl.UtilFileDB;
-import com.ard.weather.activity.uitl.Utils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
@@ -56,7 +54,6 @@ public class MainActivity extends BaseActivity  {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                UtilFileDB.ADDSHAREDDATA("zqweatherdatatime", Utils.dateTime());
                 Intent intent = new Intent(MainActivity.this,WeatherActivity.class);
                 startActivityForResult(intent,1);
             }

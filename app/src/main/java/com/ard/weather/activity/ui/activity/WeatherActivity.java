@@ -98,7 +98,7 @@ public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, 
                     toolbar.setTitle("");
                 } else if (state == State.COLLAPSED) {
                     //折叠状态
-                    toolbar.setTitle(cityName+" "+temperature);
+                    toolbar.setTitle(cityName + " " + temperature);
                 } else {
                     //中间状态
                 }
@@ -115,9 +115,9 @@ public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, 
         recyclerVertical.setNestedScrollingEnabled(false);
 
         //第三部分
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3,LinearLayoutManager.VERTICAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
         recyclerGrid.setLayoutManager(gridLayoutManager);
-      //  recyclerGrid.addItemDecoration(new GridDividerItemDecoration(this));
+        //  recyclerGrid.addItemDecoration(new GridDividerItemDecoration(this));
         recyclerGrid.setNestedScrollingEnabled(false);
 
     }
@@ -126,15 +126,16 @@ public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, 
     protected void initBeforeData() {
         cityName = UtilFileDB.SELECTSHAREDDATA("mapcity");
         if (NetUtils.isNetworkAvailable(this)) {
-            p.showData("101010100");
-        }else {
+            String cityId = UtilFileDB.SELECTSHAREDDATA("city_id");
+            p.showData(cityId.equals("") ? getString(R.string.city_id) : cityId);
+        } else {
             showToast(R.string.no_network);
         }
     }
 
     @Override
     public void onDataCallBackListenter(WeatherBean weatherBean) {
-        if (weatherBean.getCode().equals("200")){
+        if (weatherBean.getCode().equals("200")) {
             showHeaderData(weatherBean);
         }
 
@@ -143,55 +144,55 @@ public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, 
     /***
      *  heander 数据绑定
      */
-    private void showHeaderData(final WeatherBean weatherBean){
+    private void showHeaderData(final WeatherBean weatherBean) {
         try {
-            llWeatherBack.setBackgroundResource(Utils.showWeatherBackStyle(Integer.valueOf(Utils.dateTimeHH()),weatherBean.getValue().get(0).getWeathers().get(0).getWeather()));
-            temperature = weatherBean.getValue().get(0).getWeathers().get(0).getTemp_day_c()+"℃";
+            llWeatherBack.setBackgroundResource(Utils.showWeatherBackStyle(Integer.valueOf(Utils.dateTimeHH()), weatherBean.getValue().get(0).getWeathers().get(0).getWeather()));
+            temperature = weatherBean.getValue().get(0).getWeathers().get(0).getTemp_day_c() + "℃";
             weatherWindspeed.setText(temperature);
-            weatherPm.setText("Pm值："+weatherBean.getValue().get(0).getPm25().getQuality());
+            weatherPm.setText("Pm值：" + weatherBean.getValue().get(0).getPm25().getQuality());
             weatherContent.setText(weatherBean.getValue().get(0).getWeathers().get(0).getWeather());
-            weatherDirect.setText("风度："+weatherBean.getValue().get(0).getRealtime().getWD()+"/"+
+            weatherDirect.setText("风度：" + weatherBean.getValue().get(0).getRealtime().getWD() + "/" +
                     weatherBean.getValue().get(0).getRealtime().getWS());
-            weatherHumidity.setText("温度："+weatherBean.getValue().get(0).getWeathers().get(0).getTemp_night_c()
-                    +"℃~"+weatherBean.getValue().get(0).getWeathers().get(0).getTemp_day_c()+"℃");
+            weatherHumidity.setText("温度：" + weatherBean.getValue().get(0).getWeathers().get(0).getTemp_night_c()
+                    + "℃~" + weatherBean.getValue().get(0).getWeathers().get(0).getTemp_day_c() + "℃");
             cityName = weatherBean.getValue().get(0).getCity();
             tvCityName.setText(weatherBean.getValue().get(0).getCity());
 
             //weatherLogo.setImageResource(Utils.showWeatherStatusLogo(weatherBean.getValue().get(0).getWeathers().get(0).getWeather()));
 
-            homeHorizontaRrecyclerAdapter = new HomeHorizontaRrecyclerAdapter(this,weatherBean.getValue().get(0).getWeatherDetailsInfo());
+            homeHorizontaRrecyclerAdapter = new HomeHorizontaRrecyclerAdapter(this, weatherBean.getValue().get(0).getWeatherDetailsInfo());
             recyclerHorizontal.setAdapter(homeHorizontaRrecyclerAdapter);
-            homeVerticalRecyclerAdapter = new HomeVerticalRecyclerAdapter(this,weatherBean.getValue().get(0).getWeathers());
+            homeVerticalRecyclerAdapter = new HomeVerticalRecyclerAdapter(this, weatherBean.getValue().get(0).getWeathers());
             recyclerVertical.setAdapter(homeVerticalRecyclerAdapter);
 
-            homeGridRecyclerAdapter = new HomeGridRecyclerAdapter(this,weatherBean.getValue().get(0).getIndexes());
+            homeGridRecyclerAdapter = new HomeGridRecyclerAdapter(this, weatherBean.getValue().get(0).getIndexes());
             recyclerGrid.setAdapter(homeGridRecyclerAdapter);
 
 
-            dateWeek = weatherBean.getValue().get(0).getWeathers().get(0).getDate()+"   " + weatherBean.getValue().get(0).getWeathers().get(0).getWeek();
+            dateWeek = weatherBean.getValue().get(0).getWeathers().get(0).getDate() + "   " + weatherBean.getValue().get(0).getWeathers().get(0).getWeek();
 
             btnFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, dateWeek+"   "+temperature , Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, dateWeek + "   " + temperature, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent(WeatherActivity.this,CityListActivity.class);
-                            openForResultActivity(intent,1);
+                            Intent intent = new Intent(WeatherActivity.this, CityListActivity.class);
+                            openForResultActivity(intent, 1);
                         }
-                    },1000);
+                    }, 1000);
                 }
             });
 
             homeGridRecyclerAdapter.setOnItemClickListenter(new OnItemClickListenter() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent = new Intent(WeatherActivity.this,WeatherIndexContentActivity.class);
-                    intent.putExtra("name",weatherBean.getValue().get(0).getIndexes().get(position).getName());
-                    intent.putExtra("level",weatherBean.getValue().get(0).getIndexes().get(position).getLevel());
-                    intent.putExtra("content",weatherBean.getValue().get(0).getIndexes().get(position).getContent());
+                    Intent intent = new Intent(WeatherActivity.this, WeatherIndexContentActivity.class);
+                    intent.putExtra("name", weatherBean.getValue().get(0).getIndexes().get(position).getName());
+                    intent.putExtra("level", weatherBean.getValue().get(0).getIndexes().get(position).getLevel());
+                    intent.putExtra("content", weatherBean.getValue().get(0).getIndexes().get(position).getContent());
                     openIntent(intent);
                 }
             });
@@ -205,8 +206,9 @@ public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1){
-            if (resultCode == 1){
+        if (requestCode == 1) {
+            if (resultCode == 1) {
+                UtilFileDB.ADDSHAREDDATA("cityId", data.getStringExtra("cityId"));
                 p.showData(data.getStringExtra("cityId"));
             }
         }
@@ -224,12 +226,12 @@ public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, 
     }
 
 
-/****
- * 键盘监听
- *
- * @param event
- * @return
- */
+    /****
+     * 键盘监听
+     *
+     * @param event
+     * @return
+     */
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
