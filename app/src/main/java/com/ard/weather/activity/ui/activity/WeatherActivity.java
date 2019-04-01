@@ -158,7 +158,7 @@ public class WeatherActivity extends BaseMvpActivity<IView.IMvpWeatherListener, 
             cityName = weatherBean.getValue().get(0).getCity();
             tvCityName.setText(weatherBean.getValue().get(0).getCity());
 
-            //weatherLogo.setImageResource(Utils.showWeatherStatusLogo(weatherBean.getValue().get(0).getWeathers().get(0).getWeather()));
+            weatherLogo.setImageResource(Utils.showWeatherStatusLogo(weatherBean.getValue().get(0).getWeathers().get(0).getWeather()));
 
             homeHorizontaRrecyclerAdapter = new HomeHorizontaRrecyclerAdapter(this, weatherBean.getValue().get(0).getWeatherDetailsInfo());
             recyclerHorizontal.setAdapter(homeHorizontaRrecyclerAdapter);
