@@ -7,8 +7,6 @@
 <p>apk下载地址：</p> 
 <p><a href="http://shouji.baidu.com/software/21999661.html" target="_blank" rel="nofollow">http://shouji.baidu.com/software/21999661.html</a></p> 
 <p>&nbsp;</p> 
-<p>二维码下载：</p> 
-<p>&nbsp;<img alt="" src="https://static.oschina.net/uploads/img/201801/13100916_w7Qx.png"></p> 
 <p>&nbsp;</p> 
 <p>&nbsp;</p> 
 <p>效果图：</p> 
